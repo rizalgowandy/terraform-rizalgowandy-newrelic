@@ -73,7 +73,16 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Metric status percentage"
     visualization = "facet_pie_chart"
-    nrql          = "SELECT count(*) FROM digital_subscription_grpc_performance FACET `metric_status` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} FACET `metric_status` LIMIT 10 EXTRAPOLATE"
+    row           = 3
+    column        = 1
+  }
+
+
+  widget {
+    title         = "Metric status percentage"
+    visualization = "facet_pie_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} FACET `metric_status` LIMIT 10 EXTRAPOLATE"
     row           = 3
     column        = 1
   }
@@ -81,7 +90,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Metric status histogram"
     visualization = "faceted_area_chart"
-    nrql          = "SELECT count(*) FROM digital_subscription_grpc_performance FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES"
+    nrql          = "SELECT count(*) FROM ${var.event_name} FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES"
     row           = 3
     column        = 2
   }
@@ -89,7 +98,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Host"
     visualization = "facet_table"
-    nrql          = "SELECT count(*) FROM digital_subscription_grpc_performance FACET `host` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} FACET `host` LIMIT 10 EXTRAPOLATE"
     row           = 3
     column        = 3
   }
@@ -97,21 +106,57 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Method count"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM digital_subscription_grpc_performance FACET `method` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} FACET `method` LIMIT 10 EXTRAPOLATE"
     row           = 4
     column        = 1
     width         = 3
   }
+
+  widget {
+    title         = "Method with most errors"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE"
+    row           = 5
+    column        = 1
+  }
+
+  widget {
+    title         = "Operation with most errors"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+    row           = 5
+    column        = 2
+  }
+
+  widget {
+    title         = "Error with most occurrence"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE"
+    row           = 5
+    column        = 3
+  }
+
+  widget {
+    title         = "Line with most errors"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+    row           = 6
+    column        = 1
+    width         = 2
+  }
+
+  widget {
+    title         = "Hostname with most errors"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `hostname` LIMIT 10 EXTRAPOLATE"
+    row           = 6
+    column        = 1
+    width         = 2
+  }
 }
 
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE metric_status = 'error' FACET `hostname` LIMIT 10 EXTRAPOLATE
-
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' FACET `metric_status` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE
-//SELECT count(*) FROM digital_subscription_grpc_performance WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE
+//SELECT count(*) FROM ${var.event_name} WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' FACET `metric_status` LIMIT 10 EXTRAPOLATE
+//SELECT count(*) FROM ${var.event_name} WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES
+//SELECT count(*) FROM ${var.event_name} WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE
+//SELECT count(*) FROM ${var.event_name} WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE
+//SELECT count(*) FROM ${var.event_name} WHERE method = '/subscription.v1.Subscription/GetDigitalSubscriptions' AND metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE
