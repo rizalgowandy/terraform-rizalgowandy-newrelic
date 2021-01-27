@@ -11,9 +11,7 @@ variable "event_name" {
 }
 
 variable "event_methods" {
-  type = object({
-    key = string
-  })
+  type = list(string)
 }
 
 variable "base_row" {
