@@ -11,5 +11,15 @@ variable "event_name" {
 }
 
 variable "event_methods" {
-  type = list(string)
+  type = map(string)
+}
+
+variable "base_row" {
+  type    = number
+  default = 5
+}
+
+variable "total_column_per_method" {
+  type    = number
+  default = 9
 }
