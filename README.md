@@ -1,2 +1,2 @@
 # terraform-peractio-newrelic
-Terraform module to create dashboard, and policies.
+Terraform module to interact with NewRelic.
