@@ -49,7 +49,7 @@ resource "newrelic_dashboard" "main" {
 
   widget {
     title         = "Metric status histogram"
-    visualization = "faceted_area_chart"
+    visualization = "faceted_line_chart"
     nrql          = "SELECT count(*) FROM ${var.event_name} FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES"
     row           = 2
     column        = 2
@@ -139,7 +139,7 @@ resource "newrelic_dashboard" "main" {
 
     content {
       title         = "${widget.value} metric status histogram"
-      visualization = "faceted_area_chart"
+      visualization = "faceted_line_chart"
       nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method = '${widget.value}' FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES"
       row           = var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 3
