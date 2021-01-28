@@ -58,7 +58,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Method with most errors"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `method` LIMIT 10 EXTRAPOLATE"
     row           = 2
     column        = 3
   }
@@ -66,7 +66,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Operation with most errors"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
     row           = 3
     column        = 1
   }
@@ -74,7 +74,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Error with most occurrence"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
     row           = 3
     column        = 2
   }
@@ -82,7 +82,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Error code with most occurrence"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
     row           = 3
     column        = 3
   }
@@ -90,7 +90,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Line with most errors"
     visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
     row           = 4
     column        = 1
     width         = 2
@@ -99,7 +99,7 @@ resource "newrelic_dashboard" "main" {
   widget {
     title         = "Human error message with most occurrence"
     visualization = "facet_table"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
     row           = 4
     column        = 3
   }
@@ -154,7 +154,7 @@ resource "newrelic_dashboard" "main" {
     content {
       title         = "${widget.value} operation with most errors"
       visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
       row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 1
     }
@@ -166,7 +166,7 @@ resource "newrelic_dashboard" "main" {
     content {
       title         = "${widget.value} error with most occurrence"
       visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
       row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 2
     }
@@ -178,7 +178,7 @@ resource "newrelic_dashboard" "main" {
     content {
       title         = "${widget.value} error code with most occurrence"
       visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
       row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 3
     }
@@ -192,7 +192,7 @@ resource "newrelic_dashboard" "main" {
     content {
       title         = "${widget.value} line with most errors"
       visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
       row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 1
       width         = 2
@@ -205,7 +205,7 @@ resource "newrelic_dashboard" "main" {
     content {
       title         = "${widget.value} human error message with most occurrence"
       visualization = "facet_table"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
       row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 3
     }
