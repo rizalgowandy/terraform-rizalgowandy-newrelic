@@ -13,7 +13,7 @@ data "newrelic_entity" "app_grpc" {
 }
 
 module "grpc_dashboard" {
-  source = "github.com/rizalgowandy/terraform-pokopedia-newrelic"
+  source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.0.2"
 
   service_name   = "app_grpc"
   # Replace with your service name.
