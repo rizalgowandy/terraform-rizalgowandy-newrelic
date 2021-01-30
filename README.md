@@ -26,3 +26,13 @@ module "grpc_dashboard" {
   ]
 }
 ```
+
+### Required Event Tags
+
+- metric_status
+- method
+- ops
+- code
+- err
+- err_line
+- message
