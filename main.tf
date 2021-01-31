@@ -1,5 +1,5 @@
 resource "newrelic_dashboard" "main" {
-  title = var.service_name
+  title = var.dashboard_name
 
   filter {
     event_types = [
