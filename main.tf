@@ -10,7 +10,7 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = widget_billboard.value
         row    = var.base_row + floor(widget_billboard.key / 3)
-        column = widget_billboard.key % 3
+        column = 1 + (((widget_billboard.key - 1) % 3) * 4)
 
         warning  = 95
         critical = 75
@@ -40,7 +40,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_table {
       title  = "Requests per minute, by transaction"
       row    = 1
-      column = 2
+      column = 5
 
       nrql_query {
         account_id = var.account_id
@@ -51,7 +51,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_billboard {
       title  = "Success rate"
       row    = 2
-      column = 1
+      column = 9
 
       warning  = 95
       critical = 75
@@ -65,7 +65,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_pie {
       title  = "Metric status percentage"
       row    = 2
-      column = 2
+      column = 5
 
       nrql_query {
         account_id = var.account_id
@@ -76,7 +76,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_line {
       title  = "Metric status histogram"
       row    = 2
-      column = 3
+      column = 9
 
       nrql_query {
         account_id = var.account_id
@@ -99,7 +99,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_table {
       title  = "Human error message with most occurrence"
       row    = 3
-      column = 2
+      column = 7
       width  = 6
 
       nrql_query {
@@ -122,7 +122,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_bar {
       title  = "Error code with most occurrence"
       row    = 4
-      column = 2
+      column = 5
 
       nrql_query {
         account_id = var.account_id
@@ -133,7 +133,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_bar {
       title  = "Operation with most errors"
       row    = 4
-      column = 3
+      column = 9
 
       nrql_query {
         account_id = var.account_id
