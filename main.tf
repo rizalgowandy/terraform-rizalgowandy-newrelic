@@ -8,16 +8,16 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget.value
-        row    = var.base_row + floor(widget.key / 3)
-        column = widget.key % 3
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = widget_billboard.key % 3
 
         warning  = 95
         critical = 75
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget.value}'"
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
     }
