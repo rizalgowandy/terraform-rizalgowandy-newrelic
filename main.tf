@@ -1,22 +1,43 @@
+resource "newrelic_one_dashboard" "main" {
+  name = var.dashboard_name
+
+  page {
+    name = "New Relic Terraform Example"
+
+    widget_billboard {
+      title  = "Requests per minute"
+      row    = 1
+      column = 1
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "FROM Transaction SELECT rate(count(*), 1 minute)"
+      }
+    }
+
+    widget_bar {
+      title  = "Average transaction duration, by application"
+      row    = 1
+      column = 5
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "FROM Transaction SELECT average(duration) FACET appName"
+      }
+    }
+
+    widget_markdown {
+      title  = "Dashboard Note"
+      row    = 1
+      column = 9
+
+      text = "### Helpful Links\n\n* [New Relic One](https://one.newrelic.com)\n* [Developer Portal](https://developer.newrelic.com)"
+    }
+  }
+}
+
 resource "newrelic_dashboard" "main" {
   title = var.dashboard_name
-
-  filter {
-    event_types = [
-      "Transaction"
-    ]
-    attributes = [
-      "appName",
-      "name",
-      "metric_status",
-      "method",
-      "ops",
-      "code",
-      "err",
-      "err_line",
-      "message",
-    ]
-  }
 
   #####################
   # Standard widgets.

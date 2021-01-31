@@ -10,6 +10,10 @@ variable "application_id" {
   type = number
 }
 
+variable "account_id" {
+  type = number
+}
+
 variable "event_name" {
   type = string
 }
