@@ -154,9 +154,9 @@ resource "newrelic_one_dashboard" "main" {
     }
   }
 
-  page {
-    name = "Detail"
-  }
+  #  page {
+  #    name = "Detail"
+  #  }
 }
 
 #resource "newrelic_dashboard" "main" {
