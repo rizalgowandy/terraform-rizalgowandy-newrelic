@@ -30,3 +30,6 @@ override.tf.json
 
 # IDE
 .idea/
+
+# Development
+development/

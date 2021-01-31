@@ -24,7 +24,7 @@ variable "event_methods" {
 
 variable "base_row" {
   type    = number
-  default = 5
+  default = 1
 }
 
 variable "total_column_per_method" {
