@@ -1,5 +1,5 @@
 resource "newrelic_dashboard" "main" {
-  title = var.service_name
+  title = var.dashboard_name
 
   filter {
     event_types = [
@@ -64,19 +64,11 @@ resource "newrelic_dashboard" "main" {
   }
 
   widget {
-    title         = "Operation with most errors"
-    visualization = "facet_bar_chart"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
-    row           = 3
-    column        = 1
-  }
-
-  widget {
     title         = "Error with most occurrence"
     visualization = "facet_bar_chart"
     nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
     row           = 3
-    column        = 2
+    column        = 1
   }
 
   widget {
@@ -84,7 +76,23 @@ resource "newrelic_dashboard" "main" {
     visualization = "facet_bar_chart"
     nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
     row           = 3
+    column        = 2
+  }
+
+  widget {
+    title         = "Human error message with most occurrence"
+    visualization = "facet_table"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
+    row           = 3
     column        = 3
+  }
+
+  widget {
+    title         = "Operation with most errors"
+    visualization = "facet_bar_chart"
+    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+    row           = 4
+    column        = 1
   }
 
   widget {
@@ -92,16 +100,8 @@ resource "newrelic_dashboard" "main" {
     visualization = "facet_bar_chart"
     nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
     row           = 4
-    column        = 1
+    column        = 2
     width         = 2
-  }
-
-  widget {
-    title         = "Human error message with most occurrence"
-    visualization = "facet_table"
-    nrql          = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
-    row           = 4
-    column        = 3
   }
 
   #####################
@@ -152,23 +152,11 @@ resource "newrelic_dashboard" "main" {
     for_each = var.event_methods
 
     content {
-      title         = "${widget.value} operation with most errors"
-      visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
-      row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-      column        = 1
-    }
-  }
-
-  dynamic "widget" {
-    for_each = var.event_methods
-
-    content {
       title         = "${widget.value} error with most occurrence"
       visualization = "facet_bar_chart"
       nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
       row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-      column        = 2
+      column        = 1
     }
   }
 
@@ -180,22 +168,7 @@ resource "newrelic_dashboard" "main" {
       visualization = "facet_bar_chart"
       nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
       row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-      column        = 3
-    }
-  }
-
-  # Third rows.
-
-  dynamic "widget" {
-    for_each = var.event_methods
-
-    content {
-      title         = "${widget.value} line with most errors"
-      visualization = "facet_bar_chart"
-      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
-      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
-      column        = 1
-      width         = 2
+      column        = 2
     }
   }
 
@@ -206,8 +179,35 @@ resource "newrelic_dashboard" "main" {
       title         = "${widget.value} human error message with most occurrence"
       visualization = "facet_table"
       nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
-      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
+      row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
       column        = 3
+    }
+  }
+
+  # Third rows.
+
+  dynamic "widget" {
+    for_each = var.event_methods
+
+    content {
+      title         = "${widget.value} operation with most errors"
+      visualization = "facet_bar_chart"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
+      column        = 1
+    }
+  }
+
+  dynamic "widget" {
+    for_each = var.event_methods
+
+    content {
+      title         = "${widget.value} line with most errors"
+      visualization = "facet_bar_chart"
+      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
+      column        = 2
+      width         = 2
     }
   }
 }
