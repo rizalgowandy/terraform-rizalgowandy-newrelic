@@ -16,7 +16,8 @@ module "grpc_dashboard" {
   source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.0.2"
 
   # Replace with your service name.
-  service_name = "app_grpc"
+  dashboard_name = "app_grpc"
+  service_name   = "app_grpc"
 
   # Replace with your application id.
   application_id = data.newrelic_entity.app_grpc.application_id
