@@ -8,7 +8,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget_billboard.value
+        title  = "${widget_billboard.value} - ${1 + (((widget_billboard.key % 3) - 1) * 4)}"
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + (((widget_billboard.key % 3) - 1) * 4)
         width  = 4
