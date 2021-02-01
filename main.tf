@@ -41,6 +41,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Requests per minute, by transaction"
       row    = 1
       column = 5
+      width  = 8
 
       nrql_query {
         account_id = var.account_id
@@ -51,7 +52,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_billboard {
       title  = "Success rate"
       row    = 2
-      column = 9
+      column = 1
 
       warning  = 95
       critical = 75
