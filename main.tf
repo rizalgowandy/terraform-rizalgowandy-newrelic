@@ -144,6 +144,7 @@ resource "newrelic_one_dashboard" "main" {
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
+        height = 2
 
         nrql_query {
           account_id = var.account_id
@@ -152,92 +153,35 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    dynamic "widget_area" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_area.value
-        row    = var.base_row + floor(widget_area.key / 3)
-        column = 2 + ((widget_area.key % 3) * 4)
-        width  = 3
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_area.value}' EXTRAPOLATE TIMESERIES"
-        }
-      }
-    }
-  }
-
-  page {
-    name        = "Error Rate"
-    description = "Rate => metric_status = error"
-
     dynamic "widget_billboard" {
       for_each = var.event_methods
 
       content {
         title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
+        row    = 1 + var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
+        height = 2
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('expected_error')) as 'Expected Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
     }
 
-    dynamic "widget_area" {
+    dynamic "widget_line" {
       for_each = var.event_methods
 
       content {
-        title  = widget_area.value
-        row    = var.base_row + floor(widget_area.key / 3)
-        column = 2 + ((widget_area.key % 3) * 4)
+        title  = widget_line.value
+        row    = var.base_row + floor(widget_line.key / 3)
+        column = 2 + ((widget_line.key % 3) * 4)
         width  = 3
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Error Rate' from ${var.event_name} WHERE method = '${widget_area.value}' EXTRAPOLATE TIMESERIES"
-        }
-      }
-    }
-  }
-
-  page {
-    name        = "Real Error Rate"
-    description = "Rate => metric_status = error + expected_error"
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 1
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Real Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-
-    dynamic "widget_area" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_area.value
-        row    = var.base_row + floor(widget_area.key / 3)
-        column = 2 + ((widget_area.key % 3) * 4)
-        width  = 3
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Real Error Rate' from ${var.event_name} WHERE method = '${widget_area.value}' EXTRAPOLATE TIMESERIES"
+          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
         }
       }
     }
