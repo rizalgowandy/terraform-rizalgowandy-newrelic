@@ -129,7 +129,27 @@ resource "newrelic_one_dashboard" "main" {
         query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
       }
     }
+  }
 
+  page {
+    name = "Success Rate"
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 4
+        height = 2
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
   }
 
   page {
