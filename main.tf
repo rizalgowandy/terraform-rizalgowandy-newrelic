@@ -94,7 +94,7 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    gi "widget_pie" {
+    widget_pie {
       title  = "Error code with most occurrence"
       row    = 3
       column = 3
@@ -122,9 +122,9 @@ resource "newrelic_one_dashboard" "main" {
 
     widget_table {
       title  = "Error with most occurrence"
-      row    = 3
-      column = 7
-      width  = 6
+      row    = 4
+      column = 1
+      width  = 12
 
       nrql_query {
         account_id = var.account_id
@@ -132,11 +132,13 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
+    # 5
 
     widget_bar {
       title  = "Operation with most errors"
-      row    = 3
-      column = 9
+      row    = 5
+      column = 1
+      width  = 6
 
       nrql_query {
         account_id = var.account_id
@@ -146,8 +148,8 @@ resource "newrelic_one_dashboard" "main" {
 
     widget_table {
       title  = "Line with most errors"
-      row    = 4
-      column = 1
+      row    = 5
+      column = 7
       width  = 6
 
       nrql_query {
@@ -156,9 +158,11 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
+    # 6
+
     widget_table {
       title  = "Human error message with most occurrence"
-      row    = 2
+      row    = 6
       column = 1
       width  = 12
 
