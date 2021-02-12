@@ -4,7 +4,7 @@ resource "newrelic_one_dashboard" "main" {
   page {
     name = "Summary"
 
-    // 1
+    # 1
 
     widget_billboard {
       title  = "Requests per minute"
@@ -42,7 +42,7 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    // 2
+    # 2
 
     widget_billboard {
       title  = "Success rate = success + expected_error"
@@ -80,19 +80,7 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    // 3
-
-    widget_table {
-      title  = "Method with most errors"
-      row    = 2
-      column = 7
-      width  = 6
-
-      nrql_query {
-        account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE"
-      }
-    }
+    # 3
 
     widget_billboard {
       title  = "Error count"
@@ -102,11 +90,11 @@ resource "newrelic_one_dashboard" "main" {
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT filter(count(*), WHERE metric_status IN ('error')) as 'Error count' from ${var.event_name}"
+        query      = "SELECT count(*) as 'Error count' from ${var.event_name} WHERE metric_status IN ('error')"
       }
     }
 
-    widget_table {
+    gi "widget_pie" {
       title  = "Error code with most occurrence"
       row    = 3
       column = 3
@@ -118,7 +106,19 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    #    SELECT filter(count(*), WHERE metric_status = 'error') FROM digital_subscription_grpc_performance FACET `method` LIMIT 10 EXTRAPOLATE TIMESERIES
+    widget_table {
+      title  = "Method with most errors"
+      row    = 3
+      column = 7
+      width  = 6
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE"
+      }
+    }
+
+    # 4
 
     widget_table {
       title  = "Error with most occurrence"
