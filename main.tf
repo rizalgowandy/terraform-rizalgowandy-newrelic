@@ -120,7 +120,7 @@ resource "newrelic_one_dashboard" "main" {
 
     # 4
 
-    widget_table {
+    widget_bar {
       title  = "Error with most occurrence"
       row    = 4
       column = 1
@@ -146,7 +146,7 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    widget_table {
+    widget_bar {
       title  = "Line with most errors"
       row    = 5
       column = 7
@@ -160,7 +160,7 @@ resource "newrelic_one_dashboard" "main" {
 
     # 6
 
-    widget_table {
+    widget_bar {
       title  = "Human error message with most occurrence"
       row    = 6
       column = 1
