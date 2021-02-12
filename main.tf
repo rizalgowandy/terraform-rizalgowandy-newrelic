@@ -5,9 +5,22 @@ resource "newrelic_one_dashboard" "main" {
     name = "Summary"
 
     widget_billboard {
-      title  = "Requests per minute"
+      title  = "Success rate"
       row    = 1
       column = 1
+      width  = 2
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name}"
+      }
+    }
+
+    widget_billboard {
+      title  = "Requests per minute"
+      row    = 1
+      column = 3
+      width  = 2
 
       nrql_query {
         account_id = var.account_id
@@ -27,21 +40,10 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    widget_billboard {
-      title  = "Success rate"
-      row    = 2
-      column = 1
-
-      nrql_query {
-        account_id = var.account_id
-        query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name}"
-      }
-    }
-
     widget_pie {
       title  = "Metric status percentage"
       row    = 2
-      column = 5
+      column = 1
 
       nrql_query {
         account_id = var.account_id
@@ -52,7 +54,7 @@ resource "newrelic_one_dashboard" "main" {
     widget_line {
       title  = "Metric status histogram"
       row    = 2
-      column = 9
+      column = 5
 
       nrql_query {
         account_id = var.account_id
@@ -62,72 +64,72 @@ resource "newrelic_one_dashboard" "main" {
 
     widget_table {
       title  = "Method with most errors"
-      row    = 3
-      column = 1
-      width  = 6
+      row    = 2
+      column = 9
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `method` LIMIT 10 EXTRAPOLATE"
-      }
-    }
-
-    widget_table {
-      title  = "Human error message with most occurrence"
-      row    = 3
-      column = 7
-      width  = 6
-
-      nrql_query {
-        account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `method` LIMIT 10 EXTRAPOLATE"
       }
     }
 
     widget_bar {
       title  = "Error with most occurrence"
-      row    = 4
+      row    = 3
       column = 1
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE"
       }
     }
 
     widget_bar {
       title  = "Error code with most occurrence"
-      row    = 4
+      row    = 3
       column = 5
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
       }
     }
 
     widget_bar {
       title  = "Operation with most errors"
-      row    = 4
+      row    = 3
       column = 9
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `ops` LIMIT 10 EXTRAPOLATE"
       }
     }
 
     widget_table {
       title  = "Line with most errors"
-      row    = 5
+      row    = 4
       column = 1
-      width  = 12
+      width  = 6
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
       }
     }
+
+    widget_table {
+      title  = "Human error message with most occurrence"
+      row    = 4
+      column = 7
+      width  = 6
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
+      }
+    }
+
   }
 
   page {
