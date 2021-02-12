@@ -143,12 +143,29 @@ resource "newrelic_one_dashboard" "main" {
         title  = widget_billboard.value
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 4
+        width  = 1
         height = 2
 
         nrql_query {
           account_id = var.account_id
           query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_line" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_line.value
+        row    = var.base_row + floor(widget_line.key / 3)
+        column = 2 + ((widget_line.key % 3) * 4)
+        width  = 3
+        height = 2
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
         }
       }
     }
