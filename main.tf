@@ -34,7 +34,7 @@ resource "newrelic_one_dashboard" "main" {
 
       nrql_query {
         account_id = var.account_id
-        query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Success Rate' from ${var.event_name}"
+        query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name}"
       }
     }
 
@@ -142,6 +142,7 @@ resource "newrelic_one_dashboard" "main" {
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
+        height = 2
 
         nrql_query {
           account_id = var.account_id
@@ -163,6 +164,7 @@ resource "newrelic_one_dashboard" "main" {
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
+        height = 2
 
         nrql_query {
           account_id = var.account_id
@@ -184,6 +186,7 @@ resource "newrelic_one_dashboard" "main" {
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
+        height = 2
 
         nrql_query {
           account_id = var.account_id
