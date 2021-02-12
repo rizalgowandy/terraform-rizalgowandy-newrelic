@@ -14,8 +14,8 @@ resource "newrelic_one_dashboard" "main" {
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
 
-        warning  = 95
-        critical = 75
+        warning  = 5
+        critical = 25
 
         nrql_query {
           account_id = var.account_id
@@ -38,8 +38,8 @@ resource "newrelic_one_dashboard" "main" {
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
 
-        warning  = 5
-        critical = 25
+        warning  = 95
+        critical = 75
 
         nrql_query {
           account_id = var.account_id
@@ -62,8 +62,8 @@ resource "newrelic_one_dashboard" "main" {
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
 
-        warning  = 10
-        critical = 25
+        warning  = 90
+        critical = 75
 
         nrql_query {
           account_id = var.account_id
