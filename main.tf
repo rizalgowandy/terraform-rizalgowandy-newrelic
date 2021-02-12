@@ -14,8 +14,8 @@ resource "newrelic_one_dashboard" "main" {
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
 
-        warning  = 5
-        critical = 25
+        warning  = 95
+        critical = 75
 
         nrql_query {
           account_id = var.account_id
@@ -38,9 +38,6 @@ resource "newrelic_one_dashboard" "main" {
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
 
-        warning  = 95
-        critical = 75
-
         nrql_query {
           account_id = var.account_id
           query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
@@ -61,9 +58,6 @@ resource "newrelic_one_dashboard" "main" {
         row    = var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 4
-
-        warning  = 90
-        critical = 75
 
         nrql_query {
           account_id = var.account_id
