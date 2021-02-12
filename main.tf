@@ -161,7 +161,7 @@ resource "newrelic_one_dashboard" "main" {
         row    = 1 + var.base_row + floor(widget_billboard.key / 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
