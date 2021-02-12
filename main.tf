@@ -18,6 +18,29 @@ resource "newrelic_one_dashboard" "main" {
 
         nrql_query {
           account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+  }
+
+  page {
+    name = "Overview With Expected Error"
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 4
+
+        warning  = 95
+        critical = 75
+
+        nrql_query {
+          account_id = var.account_id
           query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
