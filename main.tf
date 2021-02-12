@@ -2,75 +2,6 @@ resource "newrelic_one_dashboard" "main" {
   name = var.dashboard_name
 
   page {
-    name        = "Success Rate"
-    description = "Rate => metric_status = success + expected_error"
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-  }
-
-  page {
-    name        = "Error Rate"
-    description = "Rate => metric_status = error"
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 4
-
-        warning  = 5
-        critical = 25
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-  }
-
-  page {
-    name        = "Real Error Rate"
-    description = "Rate => metric_status = error + expected_error"
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 4
-
-        warning  = 25
-        critical = 50
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Real Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-  }
-
-  page {
     name = "Summary"
 
     widget_billboard {
@@ -198,6 +129,75 @@ resource "newrelic_one_dashboard" "main" {
       nrql_query {
         account_id = var.account_id
         query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+      }
+    }
+  }
+
+  page {
+    name        = "Success Rate"
+    description = "Rate => metric_status = success + expected_error"
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 4
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+  }
+
+  page {
+    name        = "Error Rate"
+    description = "Rate => metric_status = error"
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 4
+
+        warning  = 5
+        critical = 25
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status = 'error') as 'Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+  }
+
+  page {
+    name        = "Real Error Rate"
+    description = "Rate => metric_status = error + expected_error"
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 4
+
+        warning  = 25
+        critical = 50
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error', 'expected_error')) as 'Real Error Rate' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
       }
     }
   }
