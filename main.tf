@@ -231,7 +231,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget_line.value
+        title  = replace(widget_line.value, var.event_name_substring, var.event_name_replace)
         row    = var.base_row + floor(widget_line.key / 3)
         column = 2 + ((widget_line.key % 3) * 4)
         width  = 3

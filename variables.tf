@@ -31,3 +31,11 @@ variable "total_column_per_method" {
   type    = number
   default = 9
 }
+
+variable "event_name_substring" {
+  type = string
+}
+
+variable "event_name_replace" {
+  type = string
+}
