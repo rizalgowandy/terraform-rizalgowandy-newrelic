@@ -16,7 +16,7 @@ module "grpc_dashboard" {
   source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.0"
 
   # Replace with your account id.
-  account_id     = 123456
+  account_id     = var.account_id
   # Replace with your application id.
   application_id = data.newrelic_entity.app_grpc.application_id
 
