@@ -181,7 +181,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = widget_billboard.value
-        row    = var.base_row + floor(widget_billboard.key / 3)
+        row    = var.base_row + ((widget_billboard.key - 1) * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
@@ -198,7 +198,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = widget_billboard.value
-        row    = 1 + var.base_row + floor(widget_billboard.key / 3)
+        row    = 1 + var.base_row + ((widget_billboard.key - 1) * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
@@ -215,7 +215,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = widget_billboard.value
-        row    = 2 + var.base_row + floor(widget_billboard.key / 3)
+        row    = 2 + var.base_row + ((widget_billboard.key - 1) * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
