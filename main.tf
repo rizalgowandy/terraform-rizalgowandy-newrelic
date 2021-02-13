@@ -521,7 +521,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
-        row    = 3 + floor(widget_bar.key / 3)
+        row    = 2 + floor(widget_bar.key / 3)
         column = 7
         width  = 6
 
