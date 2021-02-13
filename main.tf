@@ -124,11 +124,23 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Error with most occurrence"
       row    = 4
       column = 1
-      width  = 12
+      width  = 6
 
       nrql_query {
         account_id = var.account_id
         query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err` LIMIT 10 EXTRAPOLATE"
+      }
+    }
+
+    widget_bar {
+      title  = "Human error message with most occurrence"
+      row    = 4
+      column = 7
+      width  = 6
+
+      nrql_query {
+        account_id = var.account_id
+        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
       }
     }
 
@@ -155,20 +167,6 @@ resource "newrelic_one_dashboard" "main" {
       nrql_query {
         account_id = var.account_id
         query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
-      }
-    }
-
-    # 6
-
-    widget_bar {
-      title  = "Human error message with most occurrence"
-      row    = 6
-      column = 1
-      width  = 12
-
-      nrql_query {
-        account_id = var.account_id
-        query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `message` LIMIT 10 EXTRAPOLATE"
       }
     }
   }
