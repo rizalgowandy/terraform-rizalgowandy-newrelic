@@ -471,7 +471,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 1 + (widget_line.key * 3)
+        row    = 1 + floor(widget_line.key / 3)
         column = 5
         width  = 4
 
@@ -482,12 +482,12 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
-    dynamic "widget_bar" {
+    dynamic "widget_pie" {
       for_each = var.event_methods
 
       content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error code with most occurrence"
-        row    = 1 + (widget_bar.key * 3)
+        title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
+        row    = 1 + floor(widget_pie.key / 3)
         column = 9
         width  = 4
 
@@ -521,7 +521,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
-        row    = 2 + (widget_bar.key * 3)
+        row    = 3 + floor(widget_bar.key / 3)
         column = 7
         width  = 6
 
@@ -555,7 +555,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
-        row    = 3 + (widget_bar.key * 3)
+        row    = 3 + floor(widget_bar.key / 3)
         column = 7
         width  = 6
 
