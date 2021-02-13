@@ -218,6 +218,9 @@ resource "newrelic_one_dashboard" "main" {
         width  = 1
         height = 1
 
+        warning  = 1000
+        critical = 2000
+
         nrql_query {
           account_id = var.account_id
           query      = "SELECT percentile(timer, 95) as ms FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
