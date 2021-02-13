@@ -32,10 +32,10 @@ variable "total_column_per_method" {
   default = 9
 }
 
-variable "event_name_substring" {
+variable "event_method_substring" {
   type = string
 }
 
-variable "event_name_replace" {
+variable "event_method_replace" {
   type = string
 }
