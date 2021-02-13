@@ -220,7 +220,7 @@ resource "newrelic_one_dashboard" "main" {
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT percentile(duration, 95) * 1000 as ms from Transaction WHERE appName = '${var.service_name}' AND name = 'OtherTransaction/Go${widget_billboard.value}'"
+          query      = "SELECT percentile(timer, 95) as ms FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
     }
@@ -242,9 +242,79 @@ resource "newrelic_one_dashboard" "main" {
     }
   }
 
-  #  page {
-  #    name = "Detail"
-  #  }
+  page {
+    name = "Detail"
+
+    # 1
+
+    # 2
+
+    dynamic "widget_bar" {
+      for_each = var.event_methods
+
+      content {
+        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " error with most occurrence"
+        row    = 1 + var.base_row + (widget_bar.key * 2)
+        column = 1
+        width  = 6
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+
+    dynamic "widget_bar" {
+      for_each = var.event_methods
+
+      content {
+        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " human error message with most occurrence"
+        row    = 1 + var.base_row + (widget_bar.key * 2)
+        column = 7
+        width  = 6
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `message` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+
+    # 3
+
+    dynamic "widget_bar" {
+      for_each = var.event_methods
+
+      content {
+        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " operation with most errors"
+        row    = 2 + var.base_row + (widget_bar.key * 2)
+        column = 1
+        width  = 6
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `ops` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+
+    dynamic "widget_bar" {
+      for_each = var.event_methods
+
+      content {
+        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " line with most errors"
+        row    = 2 + var.base_row + (widget_bar.key * 2)
+        column = 7
+        width  = 6
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+  }
 }
 
 #resource "newrelic_dashboard" "main" {
