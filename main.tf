@@ -193,6 +193,57 @@ resource "newrelic_one_dashboard" "main" {
       }
     }
 
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = 1 + var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('success', 'expected_error')"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = 2 + var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentile(duration, 95) * 1000 as ms from Transaction WHERE appName = '${var.service_name}' AND name = 'OtherTransaction/Go${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = widget_billboard.value
+        row    = var.base_row + floor(widget_billboard.key / 3)
+        column = 1 + ((widget_billboard.key % 3) * 4)
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
     dynamic "widget_line" {
       for_each = var.event_methods
 
