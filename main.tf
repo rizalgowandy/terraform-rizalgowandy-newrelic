@@ -279,7 +279,7 @@ resource "newrelic_one_dashboard" "main" {
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success')) as 'Pure Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success')) as 'Real Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
     }
