@@ -253,7 +253,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " error with most occurrence"
+        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} error with most occurrence"
         row    = 1 + var.base_row + (widget_bar.key * 2)
         column = 1
         width  = 6
@@ -269,7 +269,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " human error message with most occurrence"
+        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} human error message with most occurrence"
         row    = 1 + var.base_row + (widget_bar.key * 2)
         column = 7
         width  = 6
@@ -287,7 +287,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " operation with most errors"
+        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} operation with most errors"
         row    = 2 + var.base_row + (widget_bar.key * 2)
         column = 1
         width  = 6
@@ -303,7 +303,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = (var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value) + " line with most errors"
+        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} line with most errors"
         row    = 2 + var.base_row + (widget_bar.key * 2)
         column = 7
         width  = 6
