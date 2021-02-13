@@ -180,7 +180,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget_billboard.value
+        title  = var.event_name_substring != "" ? replace(widget_billboard.value, var.event_name_substring, var.event_name_replace) : widget_billboard.value
         row    = var.base_row + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
@@ -197,7 +197,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget_billboard.value
+        title  = var.event_name_substring != "" ? replace(widget_billboard.value, var.event_name_substring, var.event_name_replace) : widget_billboard.value
         row    = 1 + var.base_row + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
@@ -214,7 +214,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = widget_billboard.value
+        title  = var.event_name_substring != "" ? replace(widget_billboard.value, var.event_name_substring, var.event_name_replace) : widget_billboard.value
         row    = 2 + var.base_row + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
@@ -231,7 +231,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = replace(widget_line.value, var.event_name_substring, var.event_name_replace)
+        title  = var.event_name_substring != "" ? replace(widget_line.value, var.event_name_substring, var.event_name_replace) : widget_line.value
         row    = var.base_row + floor(widget_line.key / 3)
         column = 2 + ((widget_line.key % 3) * 4)
         width  = 3
