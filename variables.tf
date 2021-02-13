@@ -22,16 +22,6 @@ variable "event_methods" {
   type = list(string)
 }
 
-variable "base_row" {
-  type    = number
-  default = 1
-}
-
-variable "total_column_per_method" {
-  type    = number
-  default = 9
-}
-
 variable "event_method_substring" {
   type = string
 }

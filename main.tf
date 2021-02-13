@@ -179,7 +179,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = var.base_row + (widget_billboard.key * 3)
+        row    = 1 + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
@@ -196,7 +196,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + var.base_row + (widget_billboard.key * 3)
+        row    = 1 + 1 + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
@@ -213,7 +213,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 2 + var.base_row + (widget_billboard.key * 3)
+        row    = 2 + 1 + (widget_billboard.key * 3)
         column = 1 + ((widget_billboard.key % 3) * 4)
         width  = 1
         height = 1
@@ -233,7 +233,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = var.base_row + floor(widget_line.key / 3)
+        row    = 1 + floor(widget_line.key / 3)
         column = 2 + ((widget_line.key % 3) * 4)
         width  = 3
 
@@ -250,6 +250,254 @@ resource "newrelic_one_dashboard" "main" {
 
     # 1
 
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + (widget_billboard.key * 5)
+        column = 1
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + (widget_billboard.key * 5)
+        column = 2
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success')) as 'Pure Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + (widget_billboard.key * 5)
+        column = 3
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('expected_error')) as 'Expected Error' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + (widget_billboard.key * 5)
+        column = 4
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + 1 + (widget_billboard.key * 5)
+        column = 1
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('success', 'expected_error')"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + 1 + (widget_billboard.key * 5)
+        column = 2
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Real Success' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('success')"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + 1 + (widget_billboard.key * 5)
+        column = 3
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Expected Error' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('expected_error')"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 1 + 1 + (widget_billboard.key * 5)
+        column = 4
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Error' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('error')"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + 1 + (widget_billboard.key * 5)
+        column = 1
+        width  = 1
+        height = 1
+
+        warning  = 1000
+        critical = 2000
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT average(timer) as 'ms (avg)' FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + 1 + (widget_billboard.key * 5)
+        column = 2
+        width  = 1
+        height = 1
+
+        warning  = 1000
+        critical = 2000
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentile(timer, 95) as ms FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + 1 + (widget_billboard.key * 5)
+        column = 3
+        width  = 1
+        height = 1
+
+        warning  = 1000
+        critical = 2000
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentile(timer, 99) as ms FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + 1 + (widget_billboard.key * 5)
+        column = 4
+        width  = 1
+        height = 1
+
+        warning  = 1000
+        critical = 2000
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT max(timer) as 'ms (slowest)' FROM ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_line" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
+        row    = 1 + (widget_line.key * 3)
+        column = 5
+        width  = 4
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
+        }
+      }
+    }
+
+    dynamic "widget_bar" {
+      for_each = var.event_methods
+
+      content {
+        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error code with most occurrence"
+        row    = 1 + (widget_bar.key * 3)
+        column = 9
+        width  = 4
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+
     # 2
 
     dynamic "widget_bar" {
@@ -257,7 +505,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
-        row    = 1 + var.base_row + (widget_bar.key * 2)
+        row    = 3 + 1 + (widget_bar.key * 5)
         column = 1
         width  = 6
 
@@ -273,7 +521,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
-        row    = 1 + var.base_row + (widget_bar.key * 2)
+        row    = 1 + 1 + (widget_bar.key * 3)
         column = 7
         width  = 6
 
@@ -291,7 +539,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
-        row    = 2 + var.base_row + (widget_bar.key * 2)
+        row    = 4 + 1 + (widget_bar.key * 5)
         column = 1
         width  = 6
 
@@ -307,7 +555,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
-        row    = 2 + var.base_row + (widget_bar.key * 2)
+        row    = 2 + 1 + (widget_bar.key * 3)
         column = 7
         width  = 6
 
@@ -319,114 +567,3 @@ resource "newrelic_one_dashboard" "main" {
     }
   }
 }
-
-#resource "newrelic_dashboard" "main" {
-#  title = var.dashboard_name
-#
-#  #####################
-#  # Event widgets.
-#  #####################
-#
-#  # First rows.
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} request per minute"
-#      visualization = "billboard"
-#      nrql          = "SELECT rate(count(*), 1 minute) FROM ${var.event_name} WHERE method = '${widget.value}'"
-#      row           = var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 1
-#    }
-#  }
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} metric status percentage"
-#      visualization = "facet_pie_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method = '${widget.value}' FACET `metric_status` LIMIT 10 EXTRAPOLATE"
-#      row           = var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 2
-#    }
-#  }
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} metric status histogram"
-#      visualization = "faceted_line_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method = '${widget.value}' FACET `metric_status` LIMIT 10 EXTRAPOLATE TIMESERIES"
-#      row           = var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 3
-#    }
-#  }
-#
-#  # Second rows.
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} error with most occurrence"
-#      visualization = "facet_bar_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err` LIMIT 10 EXTRAPOLATE"
-#      row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 1
-#    }
-#  }
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} error code with most occurrence"
-#      visualization = "facet_bar_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `code` LIMIT 10 EXTRAPOLATE"
-#      row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 2
-#    }
-#  }
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} human error message with most occurrence"
-#      visualization = "facet_table"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `message` LIMIT 10 EXTRAPOLATE"
-#      row           = 1 + var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 3
-#    }
-#  }
-#
-#  # Third rows.
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} operation with most errors"
-#      visualization = "facet_bar_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `ops` LIMIT 10 EXTRAPOLATE"
-#      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 1
-#    }
-#  }
-#
-#  dynamic "widget" {
-#    for_each = var.event_methods
-#
-#    content {
-#      title         = "${widget.value} line with most errors"
-#      visualization = "facet_bar_chart"
-#      nrql          = "SELECT count(*) FROM ${var.event_name} WHERE method ='${widget.value}' AND metric_status = 'error' or metric_status = 'expected_error' FACET `err_line` LIMIT 10 EXTRAPOLATE"
-#      row           = 2 + var.base_row + widget.key * (var.total_column_per_method / 3)
-#      column        = 2
-#      width         = 2
-#    }
-#  }
-#}
