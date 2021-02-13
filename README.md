@@ -29,8 +29,8 @@ module "grpc_dashboard" {
   # Help make widget name more feasible with replacing long method name.
   # Example:
   # "/inventory.v1.Inventory/GetProducts" => "/v1.Inventory/GetProducts"
-  event_name_substring = "/inventory./"
-  event_name_replace   = ""
+  event_method_substring = "/inventory./"
+  event_method_replace   = ""
   # Replace with your metric method name.
   event_methods        = [
     "/inventory.v1.Inventory/GetProducts",
