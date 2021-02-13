@@ -203,7 +203,7 @@ resource "newrelic_one_dashboard" "main" {
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}' AND metric_status IN ('success', 'expected_error')"
+          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
         }
       }
     }
@@ -255,10 +255,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 4)
+        row    = 1 + (widget_billboard.key * 5)
         column = 1
-        width  = 1
-        height = 2
+        width  = 2
+        height = 3
 
         nrql_query {
           account_id = var.account_id
@@ -272,10 +272,78 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 4)
+        row    = 1 + (widget_billboard.key * 5)
+        column = 3
+        width  = 2
+        height = 3
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_line" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
+        row    = 1 + (widget_line.key * 3)
+        column = 5
+        width  = 4
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
+        }
+      }
+    }
+
+    dynamic "widget_pie" {
+      for_each = var.event_methods
+
+      content {
+        title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
+        row    = 1 + (widget_pie.key * 3)
+        column = 9
+        width  = 4
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+        }
+      }
+    }
+
+    # 2
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + (widget_billboard.key * 5)
+        column = 1
+        width  = 1
+        height = 1
+
+        nrql_query {
+          account_id = var.account_id
+          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+        }
+      }
+    }
+
+    dynamic "widget_billboard" {
+      for_each = var.event_methods
+
+      content {
+        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        row    = 2 + (widget_billboard.key * 5)
         column = 2
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -289,10 +357,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 4)
+        row    = 2 + (widget_billboard.key * 5)
         column = 3
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -306,10 +374,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 4)
+        row    = 2 + (widget_billboard.key * 5)
         column = 4
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -323,10 +391,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 3 + (widget_billboard.key * 4)
+        row    = 3 + (widget_billboard.key * 5)
         column = 1
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -340,10 +408,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 2 + (widget_billboard.key * 4)
+        row    = 3 + (widget_billboard.key * 5)
         column = 2
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -357,10 +425,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 2 + (widget_billboard.key * 4)
+        row    = 3 + (widget_billboard.key * 5)
         column = 3
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -374,10 +442,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 2 + (widget_billboard.key * 4)
+        row    = 3 + (widget_billboard.key * 5)
         column = 4
         width  = 1
-        height = 2
+        height = 1
 
         nrql_query {
           account_id = var.account_id
@@ -391,10 +459,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 3 + (widget_billboard.key * 4)
+        row    = 4 + (widget_billboard.key * 5)
         column = 1
         width  = 1
-        height = 2
+        height = 1
 
         warning  = 1000
         critical = 2000
@@ -411,10 +479,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 3 + (widget_billboard.key * 4)
+        row    = 4 + (widget_billboard.key * 5)
         column = 2
         width  = 1
-        height = 2
+        height = 1
 
         warning  = 1000
         critical = 2000
@@ -431,10 +499,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 3 + (widget_billboard.key * 4)
+        row    = 4 + (widget_billboard.key * 5)
         column = 3
         width  = 1
-        height = 2
+        height = 1
 
         warning  = 1000
         critical = 2000
@@ -451,10 +519,10 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 3 + (widget_billboard.key * 4)
+        row    = 4 + (widget_billboard.key * 5)
         column = 4
         width  = 1
-        height = 2
+        height = 1
 
         warning  = 1000
         critical = 2000
@@ -465,40 +533,6 @@ resource "newrelic_one_dashboard" "main" {
         }
       }
     }
-
-    dynamic "widget_line" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 1 + floor(widget_line.key / 3)
-        column = 5
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
-        }
-      }
-    }
-
-    dynamic "widget_pie" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
-        row    = 1 + floor(widget_pie.key / 3)
-        column = 9
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    # 2
 
     dynamic "widget_bar" {
       for_each = var.event_methods
@@ -539,7 +573,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 4 + (widget_line.key * 4)
+        row    = 5 + (widget_line.key * 5)
         column = 1
         width  = 4
 
