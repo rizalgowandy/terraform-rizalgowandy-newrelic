@@ -323,7 +323,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 2 + (widget_billboard.key * 5)
         column = 1
         width  = 1
         height = 1
@@ -340,7 +340,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 2 + (widget_billboard.key * 5)
         column = 2
         width  = 1
         height = 1
@@ -357,7 +357,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 2 + (widget_billboard.key * 5)
         column = 3
         width  = 1
         height = 1
@@ -374,7 +374,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 2 + (widget_billboard.key * 5)
         column = 4
         width  = 1
         height = 1
@@ -391,7 +391,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 3 + (widget_billboard.key * 5)
         column = 1
         width  = 1
         height = 1
@@ -411,7 +411,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 3 + (widget_billboard.key * 5)
         column = 2
         width  = 1
         height = 1
@@ -431,7 +431,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 3 + (widget_billboard.key * 5)
         column = 3
         width  = 1
         height = 1
@@ -451,7 +451,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 5)
+        row    = 3 + (widget_billboard.key * 5)
         column = 4
         width  = 1
         height = 1
@@ -505,7 +505,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
-        row    = 2 + (widget_bar.key * 3)
+        row    = 4 + (widget_bar.key * 5)
         column = 1
         width  = 6
 
@@ -539,7 +539,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
-        row    = 2 + (widget_bar.key * 3)
+        row    = 5 + (widget_bar.key * 5)
         column = 1
         width  = 6
 
@@ -555,7 +555,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
-        row    = 2 + (widget_bar.key * 3)
+        row    = 3 + (widget_bar.key * 3)
         column = 7
         width  = 6
 
