@@ -10,6 +10,10 @@ variable "application_id" {
   type = number
 }
 
+variable "account_id" {
+  type = number
+}
+
 variable "event_name" {
   type = string
 }
@@ -18,12 +22,10 @@ variable "event_methods" {
   type = list(string)
 }
 
-variable "base_row" {
-  type    = number
-  default = 5
+variable "event_method_substring" {
+  type = string
 }
 
-variable "total_column_per_method" {
-  type    = number
-  default = 9
+variable "event_method_replace" {
+  type = string
 }
