@@ -515,160 +515,160 @@ resource "newrelic_one_dashboard" "main" {
     }
   }
 
-  page {
-    name = "Detail"
-
-    # 1
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 3)
-        column = 1
-        width  = 2
-        height = 3
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-
-    dynamic "widget_billboard" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
-        row    = 1 + (widget_billboard.key * 3)
-        column = 3
-        width  = 2
-        height = 3
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
-        }
-      }
-    }
-
-    dynamic "widget_line" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 1 + (widget_line.key * 3)
-        column = 5
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
-        }
-      }
-    }
-
-
-    dynamic "widget_line" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 1 + (widget_line.key * 3)
-        column = 9
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) as 'Attempt from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES COMPARE WITH 1 WEEK AGO"
-        }
-      }
-    }
-
-    # 2
-
-    dynamic "widget_pie" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
-        row    = 2 + (widget_pie.key * 3)
-        column = 1
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
-        row    = 2 + (widget_bar.key * 3)
-        column = 5
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
-        row    = 2 + (widget_bar.key * 3)
-        column = 9
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `message` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    # 3
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
-        row    = 3 + (widget_bar.key * 3)
-        column = 1
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `ops` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
-        row    = 3 + (widget_bar.key * 3)
-        column = 5
-        width  = 8
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err_line` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-  }
+  #  page {
+  #    name = "Detail"
+  #
+  #    # 1
+  #
+  #    dynamic "widget_billboard" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+  #        row    = 1 + (widget_billboard.key * 3)
+  #        column = 1
+  #        width  = 2
+  #        height = 3
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT percentage(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+  #        }
+  #      }
+  #    }
+  #
+  #    dynamic "widget_billboard" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+  #        row    = 1 + (widget_billboard.key * 3)
+  #        column = 3
+  #        width  = 2
+  #        height = 3
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT rate(count(*), 1 minute) as 'RPM' from ${var.event_name} WHERE method = '${widget_billboard.value}'"
+  #        }
+  #      }
+  #    }
+  #
+  #    dynamic "widget_line" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
+  #        row    = 1 + (widget_line.key * 3)
+  #        column = 5
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) as 'Attempt', filter(count(*), WHERE metric_status IN ('success', 'expected_error')) as 'Success', filter(count(*), WHERE metric_status IN ('error')) as 'Error' from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES"
+  #        }
+  #      }
+  #    }
+  #
+  #
+  #    dynamic "widget_line" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
+  #        row    = 1 + (widget_line.key * 3)
+  #        column = 9
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) as 'Attempt from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES COMPARE WITH 1 WEEK AGO"
+  #        }
+  #      }
+  #    }
+  #
+  #    # 2
+  #
+  #    dynamic "widget_pie" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
+  #        row    = 2 + (widget_pie.key * 3)
+  #        column = 1
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+  #        }
+  #      }
+  #    }
+  #
+  #    dynamic "widget_bar" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
+  #        row    = 2 + (widget_bar.key * 3)
+  #        column = 5
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err` LIMIT 10 EXTRAPOLATE"
+  #        }
+  #      }
+  #    }
+  #
+  #    dynamic "widget_bar" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
+  #        row    = 2 + (widget_bar.key * 3)
+  #        column = 9
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `message` LIMIT 10 EXTRAPOLATE"
+  #        }
+  #      }
+  #    }
+  #
+  #    # 3
+  #
+  #    dynamic "widget_bar" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
+  #        row    = 3 + (widget_bar.key * 3)
+  #        column = 1
+  #        width  = 4
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `ops` LIMIT 10 EXTRAPOLATE"
+  #        }
+  #      }
+  #    }
+  #
+  #    dynamic "widget_bar" {
+  #      for_each = var.event_methods
+  #
+  #      content {
+  #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
+  #        row    = 3 + (widget_bar.key * 3)
+  #        column = 5
+  #        width  = 8
+  #
+  #        nrql_query {
+  #          account_id = var.account_id
+  #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+  #        }
+  #      }
+  #    }
+  #  }
 }
