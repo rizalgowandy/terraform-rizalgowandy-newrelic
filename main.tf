@@ -594,7 +594,7 @@ resource "newrelic_one_dashboard" "main" {
 
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
-        row    = 1 + (widget_pie.key * 3)
+        row    = 2 + (widget_pie.key * 3)
         column = 1
         width  = 4
 
