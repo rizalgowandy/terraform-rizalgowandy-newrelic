@@ -252,7 +252,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        title  = "Success Rate"
         row    = 1 + (widget_billboard.key * 1)
         column = 1
         width  = 2
@@ -269,7 +269,7 @@ resource "newrelic_one_dashboard" "main" {
       for_each = var.event_methods
 
       content {
-        title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
+        title  = "Request per minute"
         row    = 1 + (widget_billboard.key * 1)
         column = 3
         width  = 2
