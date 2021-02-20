@@ -566,54 +566,54 @@ resource "newrelic_one_dashboard" "main" {
     #      }
     #    }
 
-    # 3
-
-    dynamic "widget_line" {
-      for_each = var.event_methods
-
-      content {
-        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
-        row    = 5 + (widget_line.key * 5)
-        column = 1
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) as 'Attempt from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES COMPARE WITH 1 WEEK AGO"
-        }
-      }
-    }
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
-        row    = 3 + (widget_bar.key * 3)
-        column = 5
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `ops` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
-
-    dynamic "widget_bar" {
-      for_each = var.event_methods
-
-      content {
-        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
-        row    = 3 + (widget_bar.key * 3)
-        column = 9
-        width  = 4
-
-        nrql_query {
-          account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err_line` LIMIT 10 EXTRAPOLATE"
-        }
-      }
-    }
+    #    # 3
+    #
+    #    dynamic "widget_line" {
+    #      for_each = var.event_methods
+    #
+    #      content {
+    #        title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
+    #        row    = 5 + (widget_line.key * 5)
+    #        column = 1
+    #        width  = 4
+    #
+    #        nrql_query {
+    #          account_id = var.account_id
+    #          query      = "SELECT count(*) as 'Attempt from ${var.event_name} WHERE method = '${widget_line.value}' EXTRAPOLATE TIMESERIES COMPARE WITH 1 WEEK AGO"
+    #        }
+    #      }
+    #    }
+    #
+    #    dynamic "widget_bar" {
+    #      for_each = var.event_methods
+    #
+    #      content {
+    #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
+    #        row    = 3 + (widget_bar.key * 3)
+    #        column = 5
+    #        width  = 4
+    #
+    #        nrql_query {
+    #          account_id = var.account_id
+    #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `ops` LIMIT 10 EXTRAPOLATE"
+    #        }
+    #      }
+    #    }
+    #
+    #    dynamic "widget_bar" {
+    #      for_each = var.event_methods
+    #
+    #      content {
+    #        title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
+    #        row    = 3 + (widget_bar.key * 3)
+    #        column = 9
+    #        width  = 4
+    #
+    #        nrql_query {
+    #          account_id = var.account_id
+    #          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' AND method = '${widget_bar.value}' FACET `err_line` LIMIT 10 EXTRAPOLATE"
+    #        }
+    #      }
+    #    }
   }
 }
