@@ -600,7 +600,7 @@ resource "newrelic_one_dashboard" "main" {
 
         nrql_query {
           account_id = var.account_id
-          query      = "SELECT count(*) FROM ${var.event_name} WHERE metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
+          query      = "SELECT count(*) FROM ${var.event_name} WHERE method = '${widget_pie.value}' AND metric_status = 'error' FACET `code` LIMIT 10 EXTRAPOLATE"
         }
       }
     }
