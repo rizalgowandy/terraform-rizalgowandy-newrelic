@@ -829,3 +829,43 @@ resource "newrelic_one_dashboard" "main" {
     }
   }
 }
+
+resource "newrelic_nrql_alert_condition" "main" {
+  for_each = toset(var.event_methods)
+
+  account_id                   = var.account_id
+  policy_id                    = var.policy_id
+  type                         = "static"
+  name                         = "[CRITICAL] High Error Rate for ${var.event_method_substring != "" ? replace(each.key, var.event_method_substring, var.event_method_replace) : each.key}"
+  description                  = "Alert when error rate is above normal condition"
+  enabled                      = var.enable_alert
+  violation_time_limit_seconds = 3600
+  value_function               = "single_value"
+
+  fill_option = "static"
+  fill_value  = 1.0
+
+  aggregation_window             = 60
+  expiration_duration            = 120
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = true
+
+  nrql {
+    query             = "SELECT percentage(count(*), WHERE metric_status = 'error') from ${var.event_name} WHERE method = '${each.key}'"
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "above"
+    threshold             = 25
+    threshold_duration    = 600
+    threshold_occurrences = "ALL"
+  }
+
+  warning {
+    operator              = "above"
+    threshold             = 5
+    threshold_duration    = 300
+    threshold_occurrences = "ALL"
+  }
+}

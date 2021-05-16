@@ -12,6 +12,10 @@ data "newrelic_entity" "app_grpc" {
   type   = "APPLICATION"
 }
 
+resource "newrelic_alert_policy" "golden_signal_policy" {
+  name = "Golden Signals"
+}
+
 module "grpc_dashboard" {
   source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.0"
 
@@ -23,6 +27,11 @@ module "grpc_dashboard" {
   # Replace with your dashboard name, should be unique for your account.
   dashboard_name = "app_grpc"
   service_name   = "app_grpc"
+
+  # Replace with your policy id.
+  policy_id = newrelic_alert_policy.golden_signal_policy.id
+  # Set true to enable alert.
+  enable_alert = false
 
   # Replace with your metric name.
   event_name           = "grpc_performance"
