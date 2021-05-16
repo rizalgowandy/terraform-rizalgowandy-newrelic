@@ -29,3 +29,11 @@ variable "event_method_substring" {
 variable "event_method_replace" {
   type = string
 }
+
+variable "policy_id" {
+  type = number
+}
+
+variable "enable_alert" {
+  type = bool
+}
