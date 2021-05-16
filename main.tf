@@ -858,14 +858,14 @@ resource "newrelic_nrql_alert_condition" "main" {
   critical {
     operator              = "above"
     threshold             = 25
-    threshold_duration    = 5
+    threshold_duration    = 600
     threshold_occurrences = "ALL"
   }
 
   warning {
     operator              = "above"
     threshold             = 5
-    threshold_duration    = 5
+    threshold_duration    = 300
     threshold_occurrences = "ALL"
   }
 }
