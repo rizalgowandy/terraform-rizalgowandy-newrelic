@@ -13,10 +13,12 @@ data "newrelic_entity" "app_grpc" {
 }
 
 resource "newrelic_alert_policy" "golden_signal_policy" {
-  name = "Golden Signals"
+  # Replace with your service name.
+  name = "Golden Signals - app_grpc"
 }
 
 module "grpc_dashboard" {
+  # Replace ref with the latest available version or branch.
   source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.0"
 
   # Replace with your account id.
