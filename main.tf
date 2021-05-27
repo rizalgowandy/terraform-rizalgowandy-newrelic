@@ -836,7 +836,7 @@ resource "newrelic_nrql_alert_condition" "main" {
   account_id                   = var.account_id
   policy_id                    = var.policy_id
   type                         = "static"
-  name                         = "[CRITICAL] High Error Rate for ${var.event_method_substring != "" ? replace(each.key, var.event_method_substring, var.event_method_replace) : each.key}"
+  name                         = "[CRITICAL] Error Rate ${var.event_method_substring != "" ? replace(each.key, var.event_method_substring, var.event_method_replace) : each.key}"
   description                  = "Alert when error rate is above normal condition"
   enabled                      = var.enable_alert
   violation_time_limit_seconds = 3600
