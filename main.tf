@@ -845,10 +845,7 @@ resource "newrelic_nrql_alert_condition" "main" {
   fill_option = "static"
   fill_value  = 1.0
 
-  aggregation_window             = 60
-  expiration_duration            = 120
-  open_violation_on_expiration   = true
-  close_violations_on_expiration = true
+  aggregation_window = 60
 
   nrql {
     query             = "SELECT percentage(count(*), WHERE metric_status = 'error') from ${var.event_name} WHERE method = '${each.key}'"
