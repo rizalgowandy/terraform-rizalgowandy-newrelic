@@ -854,8 +854,8 @@ resource "newrelic_nrql_alert_condition" "main" {
 
   critical {
     operator              = "above"
-    threshold             = 25
-    threshold_duration    = 600
+    threshold             = 10
+    threshold_duration    = 300
     threshold_occurrences = "ALL"
   }
 
