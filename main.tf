@@ -10,7 +10,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Requests per minute"
       row    = 1
       column = 1
-      width  = 2
+      width  = (2 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -21,8 +21,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_line {
       title  = "Requests per minute histogram"
       row    = 1
-      column = 3
-      width  = 4
+      column = 1 + (2 / 12) * var.max_width
+      width  = (4 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -33,8 +33,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_table {
       title  = "Requests per minute by transaction"
       row    = 1
-      column = 7
-      width  = 6
+      column = 1 + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -48,7 +48,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Success rate = success + expected_error"
       row    = 2
       column = 1
-      width  = 2
+      width  = (2 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -59,8 +59,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_pie {
       title  = "Metric status percentage"
       row    = 2
-      column = 3
-      width  = 4
+      column = 1 + (2 / 12) * var.max_width
+      width  = (4 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -71,8 +71,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_line {
       title  = "Metric status histogram"
       row    = 2
-      column = 7
-      width  = 6
+      column = 1 + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -86,7 +86,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Error count"
       row    = 3
       column = 1
-      width  = 2
+      width  = (2 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -97,8 +97,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_pie {
       title  = "Error code with most occurrence"
       row    = 3
-      column = 3
-      width  = 4
+      column = 1 + (2 / 12) * var.max_width
+      width  = (4 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -109,8 +109,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_table {
       title  = "Method with most errors"
       row    = 3
-      column = 7
-      width  = 6
+      column = 1 + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -124,7 +124,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Error with most occurrence"
       row    = 4
       column = 1
-      width  = 6
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -135,8 +135,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_bar {
       title  = "Human error message with most occurrence"
       row    = 4
-      column = 7
-      width  = 6
+      column = 1 + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -150,7 +150,7 @@ resource "newrelic_one_dashboard" "main" {
       title  = "Operation with most errors"
       row    = 5
       column = 1
-      width  = 6
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -161,8 +161,8 @@ resource "newrelic_one_dashboard" "main" {
     widget_bar {
       title  = "Line with most errors"
       row    = 5
-      column = 7
-      width  = 6
+      column = 1 + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+      width  = (6 / 12) * var.max_width
 
       nrql_query {
         account_id = var.account_id
@@ -180,8 +180,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 1
+        column = 1 + ((widget_billboard.key % 3) * (4 / 12) * var.max_width)
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -197,8 +197,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 2 + (widget_billboard.key * 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 1
+        column = 1 + ((widget_billboard.key % 3) * (4 / 12) * var.max_width)
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -214,8 +214,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 3 + (widget_billboard.key * 3)
-        column = 1 + ((widget_billboard.key % 3) * 4)
-        width  = 1
+        column = 1 + ((widget_billboard.key % 3) * (4 / 12) * var.max_width)
+        width  = (1 / 12) * var.max_width
         height = 1
 
         warning  = 1000
@@ -234,8 +234,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + floor(widget_line.key / 3)
-        column = 2 + ((widget_line.key % 3) * 4)
-        width  = 3
+        column = (2 / 12) * var.max_width + ((widget_line.key % 3) * (4 / 12) * var.max_width)
+        width  = (3 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -255,7 +255,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = "Success Rate"
         row    = 1 + (widget_billboard.key * 1)
         column = 1
-        width  = 2
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -271,8 +271,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "Request per minute"
         row    = 1 + (widget_billboard.key * 1)
-        column = 3
-        width  = 2
+        column = 1 + (2 / 12) * var.max_width
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -288,8 +288,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + (widget_line.key * 1)
-        column = 5
-        width  = 4
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -304,8 +304,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 9
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -321,8 +321,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 10
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -338,8 +338,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 11
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -355,8 +355,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 12
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -372,8 +372,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 2 + (widget_billboard.key * 3)
-        column = 9
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -389,8 +389,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 2 + (widget_billboard.key * 3)
-        column = 10
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -406,8 +406,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 2 + (widget_billboard.key * 3)
-        column = 11
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -423,8 +423,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 2 + (widget_billboard.key * 3)
-        column = 12
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         nrql_query {
@@ -440,8 +440,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 3 + (widget_billboard.key * 3)
-        column = 9
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         warning  = 1000
@@ -460,8 +460,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 3 + (widget_billboard.key * 3)
-        column = 10
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         warning  = 1000
@@ -480,8 +480,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 3 + (widget_billboard.key * 3)
-        column = 11
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         warning  = 1000
@@ -500,8 +500,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 3 + (widget_billboard.key * 3)
-        column = 12
-        width  = 1
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width + (1 / 12) * var.max_width
+        width  = (1 / 12) * var.max_width
         height = 1
 
         warning  = 1000
@@ -527,7 +527,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
         column = 1
-        width  = 2
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -543,8 +543,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 3
-        width  = 2
+        column = 1 + (2 / 12) * var.max_width
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -560,8 +560,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + (widget_line.key * 3)
-        column = 5
-        width  = 4
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -577,8 +577,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + (widget_line.key * 3)
-        column = 9
-        width  = 4
+        column = 1 + (2 / 12) * var.max_width + (2 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -596,7 +596,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
         row    = 2 + (widget_pie.key * 3)
         column = 1
-        width  = 4
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -611,8 +611,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
         row    = 2 + (widget_bar.key * 3)
-        column = 5
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -627,8 +627,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
         row    = 2 + (widget_bar.key * 3)
-        column = 9
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -646,7 +646,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
         row    = 3 + (widget_bar.key * 3)
         column = 1
-        width  = 4
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -661,8 +661,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
         row    = 3 + (widget_bar.key * 3)
-        column = 5
-        width  = 8
+        column = 1 + (4 / 12) * var.max_width
+        width  = (8 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -684,7 +684,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
         column = 1
-        width  = 2
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -700,8 +700,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_billboard.value, var.event_method_substring, var.event_method_replace) : widget_billboard.value
         row    = 1 + (widget_billboard.key * 3)
-        column = 3
-        width  = 2
+        column = 1 + (2 / 12) * var.max_width
+        width  = (2 / 12) * var.max_width
         height = 3
 
         nrql_query {
@@ -717,8 +717,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + (widget_line.key * 3)
-        column = 5
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -734,8 +734,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = var.event_method_substring != "" ? replace(widget_line.value, var.event_method_substring, var.event_method_replace) : widget_line.value
         row    = 1 + (widget_line.key * 3)
-        column = 9
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -753,7 +753,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = "${var.event_method_substring != "" ? replace(widget_pie.value, var.event_method_substring, var.event_method_replace) : widget_pie.value} - Error code with most occurrence"
         row    = 2 + (widget_pie.key * 3)
         column = 1
-        width  = 4
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -768,8 +768,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Error with most occurrence"
         row    = 2 + (widget_bar.key * 3)
-        column = 5
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -784,8 +784,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Human error message with most occurrence"
         row    = 2 + (widget_bar.key * 3)
-        column = 9
-        width  = 4
+        column = 1 + (4 / 12) * var.max_width + (4 / 12) * var.max_width
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -803,7 +803,7 @@ resource "newrelic_one_dashboard" "main" {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Operation with most errors"
         row    = 3 + (widget_bar.key * 3)
         column = 1
-        width  = 4
+        width  = (4 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -818,8 +818,8 @@ resource "newrelic_one_dashboard" "main" {
       content {
         title  = "${var.event_method_substring != "" ? replace(widget_bar.value, var.event_method_substring, var.event_method_replace) : widget_bar.value} - Line with most errors"
         row    = 3 + (widget_bar.key * 3)
-        column = 5
-        width  = 8
+        column = 1 + (4 / 12) * var.max_width
+        width  = (8 / 12) * var.max_width
 
         nrql_query {
           account_id = var.account_id
@@ -854,8 +854,8 @@ resource "newrelic_nrql_alert_condition" "main" {
 
   critical {
     operator              = "above"
-    threshold             = 10
-    threshold_duration    = 300
+    threshold             = 25
+    threshold_duration    = 600
     threshold_occurrences = "ALL"
   }
 

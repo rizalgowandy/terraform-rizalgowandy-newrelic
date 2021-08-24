@@ -19,7 +19,7 @@ resource "newrelic_alert_policy" "golden_signal_policy" {
 
 module "grpc_dashboard" {
   # Replace ref with the latest available version or branch.
-  source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.0"
+  source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.2"
 
   # Replace with your account id.
   account_id     = var.account_id
@@ -34,6 +34,9 @@ module "grpc_dashboard" {
   # Replace with your dashboard name, should be unique for your account.
   dashboard_name = "app_grpc"
   service_name   = "app_grpc"
+
+  # Max dashboard width, default is 12.
+  max_width = 12
 
   # Replace with your metric name.
   event_name           = "grpc_performance"

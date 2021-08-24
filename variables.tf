@@ -37,3 +37,8 @@ variable "policy_id" {
 variable "enable_alert" {
   type = bool
 }
+
+variable "max_width" {
+  type    = number
+  default = 12
+}
