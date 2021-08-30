@@ -1,4 +1,4 @@
-# terraform-peractio-newrelic
+# terraform-rizalgowandy-newrelic
 
 Terraform module to interact with NewRelic.
 
@@ -19,7 +19,7 @@ resource "newrelic_alert_policy" "golden_signal_policy" {
 
 module "grpc_dashboard" {
   # Replace ref with the latest available version or branch.
-  source = "git::https://github.com/rizalgowandy/terraform-peractio-newrelic?ref=v0.1.0"
+  source = "git::https://github.com/rizalgowandy/terraform-rizalgowandy-newrelic?ref=v0.1.0"
 
   # Replace with your account id.
   account_id     = var.account_id
