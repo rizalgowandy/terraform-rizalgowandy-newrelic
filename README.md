@@ -5,7 +5,7 @@
 ## Getting Started
 
 The idea was simple, I want to have a standardized dashboard monitoring, and alert across all services across all environments.
-In order that, some automation is required.
+Hence, the automation scripts to achieve that.
 
 ## Quick Start
 
