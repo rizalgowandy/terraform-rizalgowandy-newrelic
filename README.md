@@ -38,6 +38,9 @@ module "grpc_dashboard" {
   # Set true to enable alert.
   enable_alert = false
 
+  # Set to your application log management or confluence.
+  runbook_url = "http://www.scalyr.com"
+
   # Replace with your dashboard name, should be unique for your account.
   dashboard_name = "app_grpc"
   service_name   = "app_grpc"
