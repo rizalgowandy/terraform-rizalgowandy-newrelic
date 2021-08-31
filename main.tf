@@ -838,6 +838,7 @@ resource "newrelic_nrql_alert_condition" "main" {
   type                         = "static"
   name                         = "[CRITICAL] Error Rate ${var.event_method_substring != "" ? replace(each.key, var.event_method_substring, var.event_method_replace) : each.key}"
   description                  = "Alert when error rate is above normal condition"
+  runbook_url                  = var.runbook_url
   enabled                      = var.enable_alert
   violation_time_limit_seconds = 3600
   value_function               = "single_value"
