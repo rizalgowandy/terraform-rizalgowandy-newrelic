@@ -37,3 +37,7 @@ variable "policy_id" {
 variable "enable_alert" {
   type = bool
 }
+
+variable "runbook_url" {
+  type = string
+}
